@@ -1,0 +1,16 @@
+body { font-family: sans-serif; margin: 0; background: #f4f4f4; }
+header { 
+    position: sticky; top: 0; background: #6200ee; 
+    padding: 10px; display: flex; justify-content: space-around; 
+}
+#search { width: 60%; border-radius: 5px; border: none; padding: 5px; }
+.card { 
+    background: white; margin: 10px; padding: 15px; 
+    border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+.btn { 
+    background: #03dac6; border: none; padding: 10px; 
+    width: 100%; border-radius: 5px; margin-top: 10px; 
+}
+#app { padding-bottom: 20px; }
+body { background: red !important; }

@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="style.css">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Магазин</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <input type="text" id="search" placeholder="Поиск товаров...">
+        <div class="icons">
+            <button onclick="showPage('catalog')">🏠</button>
+            <button onclick="showPage('cart')">🛒 <span id="cart-count">0</span></button>
+            <button onclick="showPage('profile')">👤</button>
+        </div>
+    </header>
+
+    <main id="app">
+        </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+<script src="script.js"></script>
+
