@@ -3,23 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Я не скажу</title>
+    <title>Инверсия</title>
     <style>
         :root {
             --primary: #6366f1;
-            --danger: #ef4444;
+            --secondary: #475569;
             --bg: #0f172a;
         }
 
         body {
             margin: 0;
-            padding: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
             color: white;
             overflow: hidden;
@@ -27,110 +25,95 @@
 
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            width: 85%;
             max-width: 400px;
-            width: 90%;
         }
 
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-        }
+        h1 { font-size: 1.5rem; margin-bottom: 2rem; }
 
         .btn-group {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            min-height: 60px;
-            align-items: center;
+            gap: 15px;
+            min-height: 50px;
         }
 
         button {
-            padding: 12px 32px;
+            padding: 12px 25px;
             font-size: 1rem;
             font-weight: 600;
             border-radius: 12px;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
         }
 
+        /* Кнопка "Да" теперь летает */
         #yesBtn {
             background: var(--primary);
             color: white;
+            position: fixed; /* Позволяет перемещать по всему экрану */
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
         }
 
-        #yesBtn:hover {
-            background: #4f46e5;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
-        }
-
+        /* Кнопка "Нет" стоит на месте */
         #noBtn {
-            background: var(--danger);
+            background: var(--secondary);
             color: white;
-            position: fixed; /* Важно для свободного полета */
-            z-index: 100;
-            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #noBtn:hover {
+            background: #ef4444; /* Краснеет при наведении, намекая на отказ */
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Хочешь узнать каком стране я живу?</h1>
+        <h1>хочешь унать где я живу</h1>
         <div class="btn-group">
-            <button id="yesBtn">Нет</button>
-            <button id="noBtn">Да</button>
+            <button id="yesBtn">Да!</button>
+            <button id="noBtn">Нет</button>
         </div>
     </div>
 
     <script>
-        const noBtn = document.getElementById('noBtn');
         const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
 
-        // Устанавливаем начальную позицию кнопки "Нет"
-        const moveButton = () => {
-            const padding = 50;
-            // Генерируем случайные координаты, избегая краев экрана
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
+        // Функция перемещения кнопки "Да"
+        const moveYes = () => {
+            const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth - 20);
+            const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight - 20);
             
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
+            yesBtn.style.left = `${x}px`;
+            yesBtn.style.top = `${y}px`;
         };
 
-        // Двигаем при наведении (для ПК)
-        noBtn.addEventListener('mouseenter', moveButton);
-        
-        // Двигаем при касании (для мобилок)
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Запрещаем клик
-            moveButton();
+        // События для "Да"
+        yesBtn.addEventListener('mouseenter', moveYes);
+        yesBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveYes();
         });
 
-        yesBtn.addEventListener('click', () => {
-            document.querySelector('.container').innerHTML = `
-                <h1 style="color: #10b981;">Я так и знал! 😎</h1>
-                <p>Умный выбор.</p>
-                <button onclick="location.reload()" style="background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; margin-top: 1rem;">Начать заново</button>
-            `;
+        // Событие для "Нет"
+        noBtn.addEventListener('click', () => {
+            alert('так и знал'🤔');
         });
 
-        // Инициализация позиции кнопки "Нет" рядом с кнопкой "Да"
+        // Изначально ставим "Да" поверх того места, где она должна быть в контейнере
         window.onload = () => {
-            const rect = noBtn.getBoundingClientRect();
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = `${rect.left}px`;
-            noBtn.style.top = `${rect.top}px`;
+            const rect = yesBtn.getBoundingClientRect();
+            yesBtn.style.left = `${rect.left}px`;
+            yesBtn.style.top = `${rect.top}px`;
         };
     </script>
 </body>
