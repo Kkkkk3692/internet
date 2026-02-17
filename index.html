@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Инверсия</title>
+    <title>НоН</title>
     <style>
         :root {
             --primary: #6366f1;
@@ -25,7 +25,7 @@
 
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(15px);
             padding: 2.5rem;
             border-radius: 30px;
@@ -33,53 +33,67 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             width: 85%;
             max-width: 400px;
+            transition: all 0.5s ease;
         }
 
-        h1 { font-size: 1.5rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.6rem; margin-bottom: 2rem; line-height: 1.4; }
 
         .btn-group {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            min-height: 50px;
+            gap: 20px;
+            min-height: 60px;
+            align-items: center;
         }
 
         button {
-            padding: 12px 25px;
-            font-size: 1rem;
+            padding: 12px 30px;
+            font-size: 1.1rem;
             font-weight: 600;
             border-radius: 12px;
             border: none;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease, background 0.3s;
         }
 
-        /* Кнопка "Да" теперь летает */
+        /* Кнопка "Да" — беглец */
         #yesBtn {
             background: var(--primary);
             color: white;
-            position: fixed; /* Позволяет перемещать по всему экрану */
+            position: fixed; /* Позволяет летать по всему экрану */
             z-index: 1000;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
         }
 
-        /* Кнопка "Нет" стоит на месте */
+        /* Кнопка "Нет" — стоит на месте */
         #noBtn {
             background: var(--secondary);
             color: white;
         }
 
         #noBtn:hover {
-            background: #ef4444; /* Краснеет при наведении, намекая на отказ */
+            background: #ef4444;
+        }
+
+        .success-text {
+            color: #ef4444;
+            font-size: 2rem;
+            font-weight: bold;
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>хочешь унать где я живу</h1>
+    <div class="container" id="mainCard">
+        <h1 id="question">Хочешь узнать где я живу</h1>
         <div class="btn-group">
-            <button id="yesBtn">Да!</button>
+            <button id="yesBtn">Да</button>
             <button id="noBtn">Нет</button>
         </div>
     </div>
@@ -87,29 +101,36 @@
     <script>
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
+        const mainCard = document.getElementById('mainCard');
 
-        // Функция перемещения кнопки "Да"
+        // Функция перемещения кнопки "Да" в случайное место
         const moveYes = () => {
-            const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth - 20);
-            const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight - 20);
+            const padding = 20;
+            const x = Math.random() * (window.innerWidth - yesBtn.offsetWidth - padding);
+            const y = Math.random() * (window.innerHeight - yesBtn.offsetHeight - padding);
             
             yesBtn.style.left = `${x}px`;
             yesBtn.style.top = `${y}px`;
         };
 
-        // События для "Да"
+        // События для "Да" (убегает при наведении или касании)
         yesBtn.addEventListener('mouseenter', moveYes);
         yesBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
             moveYes();
         });
 
-        // Событие для "Нет"
+        // Логика для кнопки "Нет" (стоит на месте)
         noBtn.addEventListener('click', () => {
-            alert('так и знал'🤔');
+            yesBtn.style.display = 'none'; // Скрываем летающую кнопку
+            mainCard.innerHTML = `
+                <div class="success-text">Так и знал!</div>
+                <p style="margin-top: 15px; opacity: 0.7;">Я так и знал</p>
+                <button onclick="location.reload()" style="background: transparent; border: 1px solid white; color: white; margin-top: 20px; padding: 8px 20px;">Еще раз</button>
+            `;
         });
 
-        // Изначально ставим "Да" поверх того места, где она должна быть в контейнере
+        // Инициализация: ставим "Да" на стартовую позицию
         window.onload = () => {
             const rect = yesBtn.getBoundingClientRect();
             yesBtn.style.left = `${rect.left}px`;
